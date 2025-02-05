@@ -1,4 +1,4 @@
-APP_NAME = 'Whatsapp Chat Analyzer'
+APP_NAME = 'WhatsApp Chat Analyzer'
 
 TRAFFIC_FILE_PATH = 'traffic.txt'
 
