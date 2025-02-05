@@ -21,4 +21,4 @@ def guidelines_page():
     - Media files (images, videos) **are not needed** for text-based analysis.
     """)
 
-    st.subheader("Your chats are only analysed and are not stored or used elsewhere. They will be automatically cleared upon refresh or closing the website.")
+    st.subheader("Your chats are only Analyzed and are not stored or used elsewhere. They will be automatically cleared upon refresh or closing the website.")
