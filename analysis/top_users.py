@@ -12,10 +12,10 @@ def basic_page(user_list, df):
         # st.header(f"{user_stats['num_messages']} Messages, {user_stats['num_words']} Words {user_stats['num_medias']} Shared Media, {user_stats['num_links']} Shared Links")
 
     stats_df = pd.DataFrame(stats, columns=["User", "Messages", "Words", "Media", "Links"])
-    st.table(stats_df)
+    st.dataframe(stats_df, use_container_width=True)
 
     user_stats = stats_df.drop(stats_df[stats_df['User'] == 'All'].index)
-    top_x = st.slider("Select Top X User", 1, len(user_list) - 1, len(user_list)//2)
+    top_x = st.slider("Select Top X User", 1, len(user_list), len(user_list))
 
     for feature in user_stats.columns:
         if feature == 'User':

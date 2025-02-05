@@ -63,7 +63,6 @@ def activity_page(selected_user, df):
     col1, col2 = st.columns([0.5, 0.5])
 
     with col1:
-        print(col1)
         st.dataframe(common_words_df, use_container_width=True)
         st.text("NOTE: Hover on table you will have a search icon on the top use it to search for your favourite words")
     with col2:
@@ -79,7 +78,6 @@ def activity_page(selected_user, df):
     col1, col2 = st.columns([0.5, 0.5])
 
     with col1:
-        print(col1)
         st.dataframe(emoji_df, use_container_width=True)
         st.text("NOTE: Hover on table you will have a search icon on the top use it to search for your favourite emojis")
     with col2:
