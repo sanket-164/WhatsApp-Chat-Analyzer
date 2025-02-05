@@ -1,0 +1,11 @@
+[client]
+showErrorDetails = true
+toolbarMode = "viewer"
+
+[theme]
+base = "dark"
+primaryColor = "#25d366"  # WhatsApp green
+backgroundColor = "#1E1E1E"
+secondaryBackgroundColor = "#2A2A2A"
+textColor = "#E1E1E1"  # Soft white text for contrast
+font = "sans serif"  # Smooth, legible font for chat readability
