@@ -57,9 +57,9 @@ uploaded_file = st.sidebar.file_uploader("Choose a txt chat file", type=['txt'],
 
 if uploaded_file is not None:
     try:
-        selected_format = st.sidebar.selectbox(label="Date time Format of your chat", placeholder="Date Time Format", options=DATETIME_FORMATS)
+        selected_format = st.sidebar.selectbox(label="Date Format of your chat", placeholder="Date Time Format", options=DATETIME_FORMATS)
 
-        if selected_format is not None and selected_format != 'Datetime Format':
+        if selected_format is not None and selected_format != DATETIME_FORMATS[0]:
             bytes_data = uploaded_file.getvalue()
             data = bytes_data.decode("utf-8")
             df = preprocess.preprocess(data, DATETIME_FORMATS_PREPROCESS[DATETIME_FORMATS.index(selected_format)])
@@ -91,6 +91,8 @@ if uploaded_file is not None:
                     timeline_page(selected_user, df)
             elif st.session_state["current_page"] == TOP_NAV_HEADERS[3]:
                     feedback_page()
+        else:
+             st.title("Select Date Format of you chat from Sidebar")
     except Exception as e:
          st.error(f"Error: {e}")
 else:
