@@ -31,7 +31,9 @@ def basic_page(user_list, df):
             fig, axes = plt.subplots()
             axes.bar(users, feature_count)
             axes.set_title(f"Top {top_x} Users by {feature}")
+            plt.xlabel("User")
             plt.ylabel(feature)
+            plt.xticks(rotation='vertical')
             st.pyplot(fig)
 
         with col2:
