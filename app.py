@@ -1,7 +1,7 @@
 import streamlit as st
 import preprocess
 import matplotlib.pyplot as plt
-from constants import TRAFFIC_FILE_PATH, APP_NAME, TOP_NAV_HEADERS, DATETIME_FORMATS, DATETIME_FORMATS_PREPROCESS
+from constants import TRAFFIC_FILE_PATH, APP_NAME, TOP_NAV_HEADERS
 from navigation import top_navbar
 
 from guidelines import guidelines_page
@@ -57,43 +57,41 @@ uploaded_file = st.sidebar.file_uploader("Choose a txt chat file", type=['txt'],
 
 if uploaded_file is not None:
     try:
-        selected_format = st.sidebar.selectbox(label="Date Format of your chat", placeholder="Date Time Format", options=DATETIME_FORMATS)
+        if "chat_file" not in st.session_state or st.session_state["chat_file"] != uploaded_file.name:
+            st.cache_data.clear()
+            st.session_state['chat_file'] = uploaded_file.name
+            traffic["Chats Analyzed"] = traffic["Chats Analyzed"] + 1
+            write_file(TRAFFIC_FILE_PATH, traffic)
+            st.cache_data.clear()
+        
+        bytes_data = uploaded_file.getvalue()
+        data = bytes_data.decode("utf-8")
+        df = preprocess.preprocess(data)
 
-        if selected_format is not None and selected_format != DATETIME_FORMATS[0]:
-            bytes_data = uploaded_file.getvalue()
-            data = bytes_data.decode("utf-8")
-            df = preprocess.preprocess(data, DATETIME_FORMATS_PREPROCESS[DATETIME_FORMATS.index(selected_format)])
+        user_list = df['user'].unique().tolist()
+        if 'group_notification' in user_list:
+            user_list.remove('group_notification')
+        user_list.sort()
+        user_list.insert(0, "All")
 
-            if "chat_file" not in st.session_state or st.session_state["chat_file"] != uploaded_file.name:
-                st.session_state['chat_file'] = uploaded_file.name
-                traffic["Chats Analyzed"] = traffic["Chats Analyzed"] + 1
-                write_file(TRAFFIC_FILE_PATH, traffic)
+        selected_user = st.sidebar.selectbox("Select User", user_list)
+        
+        st.sidebar.header(f"{traffic["Visits"]} Visited")
+        st.sidebar.header(f"{traffic["Chats Analyzed"]} Chat Analyzed")
 
-            user_list = df['user'].unique().tolist()
-            if 'group_notification' in user_list: 
-                user_list.remove('group_notification')
-            user_list.sort()
-            user_list.insert(0, "All")
+        top_navbar()
 
-            selected_user = st.sidebar.selectbox("Select User", user_list)
-            
-            st.sidebar.header(f"{traffic["Visits"]} Visited")
-            st.sidebar.header(f"{traffic["Chats Analyzed"]} Chat Analyzed")
-            st.sidebar.text("Got an Error!?\nContact me at sanketsadadiya53@gmail.com")
-
-            top_navbar()
-
-            if st.session_state["current_page"] == TOP_NAV_HEADERS[0]:
-                    basic_page(user_list, df)
-            elif st.session_state["current_page"] == TOP_NAV_HEADERS[1]:
-                    activity_page(selected_user, df)
-            elif st.session_state["current_page"] == TOP_NAV_HEADERS[2]:
-                    timeline_page(selected_user, df)
-            elif st.session_state["current_page"] == TOP_NAV_HEADERS[3]:
-                    feedback_page()
-        else:
-             st.title("Select Date Format of you chat from Sidebar")
+        if st.session_state["current_page"] == TOP_NAV_HEADERS[0]:
+                basic_page(user_list, df)
+        elif st.session_state["current_page"] == TOP_NAV_HEADERS[1]:
+                activity_page(selected_user, df)
+        elif st.session_state["current_page"] == TOP_NAV_HEADERS[2]:
+                timeline_page(selected_user, df)
+        elif st.session_state["current_page"] == TOP_NAV_HEADERS[3]:
+                feedback_page()
     except Exception as e:
          st.error(f"Error: {e}")
 else:
      guidelines_page()
+     
+st.sidebar.text("Got an Error!?\nContact me at sanketsadadiya53@gmail.com")

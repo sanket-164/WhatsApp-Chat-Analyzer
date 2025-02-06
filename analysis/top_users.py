@@ -15,7 +15,7 @@ def basic_page(user_list, df):
     st.dataframe(stats_df, use_container_width=True)
 
     user_stats = stats_df.drop(stats_df[stats_df['User'] == 'All'].index)
-    top_x = st.slider("Select Top X User", 1, len(user_list), len(user_list))
+    top_x = st.slider("Select Top X User", 1, len(user_list) - 1, (len(user_list) - 1)//2)
 
     for feature in user_stats.columns:
         if feature == 'User':
