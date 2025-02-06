@@ -88,8 +88,6 @@ def preprocess(data):
         df['hour'] = df['date'].dt.hour
         df['minute'] = df['date'].dt.minute
 
-        st.session_state['preprocessed_data'] = df
-
         return df
     except Exception as e:
         return e

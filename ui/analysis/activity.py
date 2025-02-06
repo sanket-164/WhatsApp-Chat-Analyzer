@@ -113,7 +113,7 @@ def used_words(selected_user, df):
     if selected_user != 'All':
         df = df[df['user'] == selected_user]
 
-    f = open('stop_hinglish.txt', 'r')
+    f = open('utils/stop_hinglish.txt', 'r')
     stop_words = f.read()
 
     temp = df[df['user'] != 'group_notifications']

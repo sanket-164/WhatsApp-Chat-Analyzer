@@ -1,56 +1,33 @@
 import streamlit as st
-import preprocess
-import matplotlib.pyplot as plt
-from constants import TRAFFIC_FILE_PATH, APP_NAME, TOP_NAV_HEADERS
-from navigation import top_navbar
 
-from guidelines import guidelines_page
+import utils.preprocess as preprocess
+from utils.constants import LOGO_IMAGE_PATH, TRAFFIC_FILE_PATH, APP_NAME, TOP_NAV_HEADERS
+from utils.update_data import read_traffic, update_traffic
 
-from analysis.top_users import basic_page
-from analysis.activity import activity_page
-from analysis.timeline import timeline_page
-
-from feedback import feedback_page
+from ui.guidelines import guidelines_page
+from ui.navigation import top_navbar
+from ui.analysis.top_users import basic_page
+from ui.analysis.activity import activity_page
+from ui.analysis.timeline import timeline_page
+from ui.feedback import feedback_page
 
 st.set_page_config(
     page_title=APP_NAME,
-    page_icon="logo.png",
+    page_icon=LOGO_IMAGE_PATH,
     layout="wide",
-    initial_sidebar_state="auto",
+    initial_sidebar_state="expanded",
     menu_items=None,
 )
 
 st.sidebar.title(APP_NAME)
 
-traffic = {}
-
-# Function to read and parse the file
-def read_file(file_path):
-    data = {}
-    try:
-        with open(file_path, "r") as file:
-            for line in file:
-                key, value = line.strip().split(": ")
-                data[key] = int(value)
-    except FileNotFoundError:
-        # Initialize the file if not found
-        data = {"Visits": 0, "Chats Analyzed": 0}
-        write_file(file_path, data)
-    return data
-
-# Function to write updated data back to the file
-def write_file(file_path, data):
-    with open(file_path, "w") as file:
-        for key, value in data.items():
-            file.write(f"{key}: {value}\n")
-
 # Read file
-traffic = read_file(TRAFFIC_FILE_PATH)
+traffic = read_traffic(TRAFFIC_FILE_PATH)
 
 if "new_user" not in st.session_state:
     st.session_state["new_user"] = True
     traffic["Visits"] = traffic["Visits"] + 1
-    write_file(TRAFFIC_FILE_PATH, traffic)
+    update_traffic(TRAFFIC_FILE_PATH, traffic)
 
 
 uploaded_file = st.sidebar.file_uploader("Choose a txt chat file", type=['txt'], accept_multiple_files=False)
@@ -61,7 +38,7 @@ if uploaded_file is not None:
             st.cache_data.clear()
             st.session_state['chat_file'] = uploaded_file.name
             traffic["Chats Analyzed"] = traffic["Chats Analyzed"] + 1
-            write_file(TRAFFIC_FILE_PATH, traffic)
+            update_traffic(TRAFFIC_FILE_PATH, traffic)
             st.cache_data.clear()
         
         bytes_data = uploaded_file.getvalue()

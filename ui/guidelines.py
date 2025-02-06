@@ -1,7 +1,7 @@
 import streamlit as st
 
 def guidelines_page():
-    st.title("Guidelines to Export WhatsApp Chats for Analysis")
+    st.title("Export WhatsApp Chats for Analysis")
 
     st.header("Step-by-Step Guide 📋")
 

@@ -1,6 +1,4 @@
 import streamlit as st
-from urlextract import URLExtract
-import pandas as pd
 import matplotlib.pyplot as plt
 
 def timeline_page(selected_user, df):

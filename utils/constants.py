@@ -1,12 +1,10 @@
-from datetime import datetime
-
-current_date = datetime.now()
-
 APP_NAME = 'WhatsApp Chat Analyzer'
 
-TRAFFIC_FILE_PATH = 'traffic.txt'
+LOGO_IMAGE_PATH = 'images/logo.png'
 
-FEEDBACK_FILE_PATH = 'feedbacks.txt'
+TRAFFIC_FILE_PATH = 'my_data/traffic.txt'
+
+FEEDBACK_FILE_PATH = 'my_data/feedbacks.txt'
 
 TOP_NAV_HEADERS = [
     "Top Users",

@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 
-from constants import TOP_NAV_HEADERS, TOP_NAV_ICONS
+from utils.constants import TOP_NAV_HEADERS, TOP_NAV_ICONS
 
 def top_navbar():
     if "current_page"  not in st.session_state:
