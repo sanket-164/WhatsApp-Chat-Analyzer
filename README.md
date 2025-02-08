@@ -1,4 +1,4 @@
-# WhatsApp Chat Analyzer
+# WhatsApp Chat Analyzer (<a href="https://sanket-s-whatsapp-chat-analyzer.streamlit.app/" target="__blank">**View**</a>)
 
 Analyze your **WhatsApp conversations** with ease! 📊 This tool provides insights into **message counts, media sharing, word usage, and activity trends** using **Python, Pandas, Streamlit, and Matplotlib**.  
 
