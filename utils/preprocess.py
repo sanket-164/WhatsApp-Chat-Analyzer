@@ -36,31 +36,18 @@ def preprocess(data):
 
     try:        
         data = "\n".join([convert_format1_to_format2(log) for log in data.split('\n')])
+
         messages = re.split(pattern_2, data)[1:]
         dates = re.findall(pattern_2, data)
 
         df = pd.DataFrame({'user_message': messages, 'message_date': dates})
-        print("Preprocessed called")
 
         for fmt, pattern in date_patterns:
-            date_part = None, None
-            for date_string in dates:
-                match = re.search(pattern, date_string)
-                if match:
-                    date_part = match.group()
-                    try:
-                        datetime.strptime(date_part, fmt)
-                    except ValueError:
-                        date_part = None
-                        break
-                else:
-                    date_part = None
-                    break
-            
-            if date_part:
-                print(f"New Detected format: {fmt}")
+            try:
                 df['message_date'] = pd.to_datetime(df['message_date'], format=fmt)
                 break
+            except ValueError:
+                print(f"{fmt} not supported")
         
         df.rename(columns={'message_date' : 'date'}, inplace = True)
 
@@ -68,7 +55,7 @@ def preprocess(data):
         messages = []
 
         for message in df['user_message']:
-            entry = re.split(r'(.*?):\s', message)
+            entry = re.split('([\w\W]+?):\s', message)
             if entry[1:]:
                 users.append(entry[1])
                 messages.append(entry[2])

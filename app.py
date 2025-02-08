@@ -33,42 +33,37 @@ if "new_user" not in st.session_state:
 uploaded_file = st.sidebar.file_uploader("Choose a txt chat file", type=['txt'], accept_multiple_files=False)
 
 if uploaded_file is not None:
-    try:
-        if "chat_file" not in st.session_state or st.session_state["chat_file"] != uploaded_file.name:
-            st.cache_data.clear()
-            st.session_state['chat_file'] = uploaded_file.name
-            traffic["Chats Analyzed"] = traffic["Chats Analyzed"] + 1
-            update_traffic(TRAFFIC_FILE_PATH, traffic)
-            st.cache_data.clear()
-        
-        bytes_data = uploaded_file.getvalue()
-        data = bytes_data.decode("utf-8")
-        df = preprocess.preprocess(data)
+    if "chat_file" not in st.session_state or st.session_state["chat_file"] != uploaded_file.name:
+        st.cache_data.clear()
+        st.session_state['chat_file'] = uploaded_file.name
+        traffic["Chats Analyzed"] = traffic["Chats Analyzed"] + 1
+        update_traffic(TRAFFIC_FILE_PATH, traffic)
+        st.cache_data.clear()
+    
+    bytes_data = uploaded_file.getvalue()
+    data = bytes_data.decode("utf-8")
+    df = preprocess.preprocess(data)
 
-        user_list = df['user'].unique().tolist()
-        if 'group_notification' in user_list:
-            user_list.remove('group_notification')
-        user_list.sort()
-        user_list.insert(0, "All")
+    user_list = df['user'].unique().tolist()
+    if 'group_notification' in user_list:
+        user_list.remove('group_notification')
+    user_list.sort()
+    user_list.insert(0, "All")
 
-        selected_user = st.sidebar.selectbox("Select User", user_list)
-        
-        st.sidebar.header(f"{traffic["Visits"]} Visited")
-        st.sidebar.header(f"{traffic["Chats Analyzed"]} Chat Analyzed")
+    selected_user = st.sidebar.selectbox("Select User", user_list)
+    
+    st.sidebar.header(f"{traffic["Visits"]} Visited")
+    st.sidebar.header(f"{traffic["Chats Analyzed"]} Chat Analyzed")
 
-        top_navbar()
+    top_navbar()
 
-        if st.session_state["current_page"] == TOP_NAV_HEADERS[0]:
-                basic_page(user_list, df)
-        elif st.session_state["current_page"] == TOP_NAV_HEADERS[1]:
-                activity_page(selected_user, df)
-        elif st.session_state["current_page"] == TOP_NAV_HEADERS[2]:
-                timeline_page(selected_user, df)
-        elif st.session_state["current_page"] == TOP_NAV_HEADERS[3]:
-                feedback_page()
-    except Exception as e:
-         st.error(f"Error: {e}")
+    if st.session_state["current_page"] == TOP_NAV_HEADERS[0]:
+            basic_page(user_list, df)
+    elif st.session_state["current_page"] == TOP_NAV_HEADERS[1]:
+            activity_page(selected_user, df)
+    elif st.session_state["current_page"] == TOP_NAV_HEADERS[2]:
+            timeline_page(selected_user, df)
+    elif st.session_state["current_page"] == TOP_NAV_HEADERS[3]:
+            feedback_page()
 else:
      guidelines_page()
-     
-st.sidebar.text("Got an Error!?\nContact me at sanketsadadiya53@gmail.com")

@@ -1,2 +1,2 @@
-Visits: 0
-Chats Analyzed: 0
+Visits: 628
+Chats Analyzed: 15
